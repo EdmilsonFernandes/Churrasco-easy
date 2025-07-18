@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/order.dart';
 import '../services/order_service.dart';
+import 'item_management_screen.dart';
 
 class OrderQueueScreen extends StatefulWidget {
   const OrderQueueScreen({Key? key}) : super(key: key);
@@ -43,7 +44,22 @@ class _OrderQueueScreenState extends State<OrderQueueScreen> {
   Widget build(BuildContext context) {
     final orders = _service.pendingOrders;
     return Scaffold(
-      appBar: AppBar(title: const Text('Fila de Pedidos')),
+      appBar: AppBar(
+        title: const Text('Fila de Pedidos'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ItemManagementScreen(),
+                ),
+              );
+            },
+          )
+        ],
+      ),
       body: Column(
         children: [
           Padding(
