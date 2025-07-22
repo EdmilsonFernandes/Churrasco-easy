@@ -52,7 +52,7 @@ class DatabaseService {
   }
 
   Future<List<Order>> fetchOrders() async {
-    final maps = await _db!.query('orders', orderBy: 'createdAt ASC');
+    final maps = await _db!.query('orders', orderBy: 'id ASC');
     return maps.map((m) => Order.fromMap(m)).toList();
   }
 
