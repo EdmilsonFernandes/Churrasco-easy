@@ -1,11 +1,6 @@
-DO $$
-BEGIN
-   IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'churrasco') THEN
-      PERFORM dblink_exec('dbname=postgres', 'CREATE DATABASE churrasco');
-   END IF;
-EXCEPTION WHEN undefined_table THEN
-   -- dblink not installed, skip automatic database creation
-END$$;
+-- Database schema for Churrasquinho App
+-- Enable UUID generation helpers
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
