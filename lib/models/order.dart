@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 enum OrderStatus { pending, delivered, paid }
 
 class Order {
@@ -17,13 +19,16 @@ class Order {
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 
+  static final DateFormat _slashFormat = DateFormat('dd/MM/yyyy');
+  static final DateFormat _dashFormat = DateFormat('dd-MM-yyyy');
+
   Map<String, dynamic> toMap() => {
         'id': id,
         'customerName': customerName,
         'items': items.join(','),
         'quantity': quantity,
         'status': status.index,
-        'createdAt': createdAt.toIso8601String(),
+        'createdAt': _slashFormat.format(createdAt),
       };
 
   static Order fromMap(Map<String, dynamic> map) {
@@ -33,7 +38,14 @@ class Order {
       items: (map['items'] as String).split(','),
       quantity: map['quantity'] as int,
       status: OrderStatus.values[map['status'] as int],
-      createdAt: DateTime.parse(map['createdAt'] as String),
+      createdAt: _parseDate(map['createdAt'] as String),
     );
+  }
+
+  static DateTime _parseDate(String value) {
+    if (value.contains('-')) {
+      return _dashFormat.parse(value);
+    }
+    return _slashFormat.parse(value);
   }
 }
